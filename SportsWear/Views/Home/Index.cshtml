@@ -1,0 +1,126 @@
+﻿@model IEnumerable<SportsWear.Models.Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<partial name="_Carousel" />
+@{
+    if (ViewBag.Categories != null)
+    {
+    <div class="mt-3 mb-2 ml-1">
+        
+        <h3 class="mb-3 text-black-50">Categories</h3>
+        @foreach (var item in ViewBag.Categories)
+        {
+  
+        <a asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-sm btn-primary">@item.CategoryName</a>
+  
+
+        }
+    </div>
+    }
+}
+
+<h3 class="mt-3 mb-3 text-black-50">
+    @if (ViewBag.categoryName != null)
+    {
+        <span>@ViewBag.categoryName Products</span>
+    }
+    else
+    {
+      <span>All Products</span>
+    }
+
+    </h3>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card">
+                <form asp-action="AddToCart" method="post">
+                    <input name="productId" value="@item.ProductId" type="hidden" />
+                    <div class="card-body">
+                        <div id="image-container" style="height:200px">
+                            <img src="~/images/uploads/productImages/@item.ProductImage" style="height:100%;width:100%;border:1px solid grey" />
+                        </div>
+                        <div id="main-content">
+                            <div id="title" class="mb-1 mt-1 text-muted font-weight-bold">
+                                @item.ProductName
+                            </div>
+                            <div id="infor-content">
+
+
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <strong>Price:</strong> @item.ProductPrice$
+                                    </div>
+                                    <div class="col-md-7 text-success">
+                                        <strong>Available in Stock:</strong> @item.ProductQty
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <strong>Size:</strong> @item.ProductSize
+                                    </div>
+                                    <div class="col-md-7">
+                                        <strong>Gender:</strong> @item.ProductGender
+                                    </div>
+                                </div>
+                                <div class="row mb-2 text-muted" style="height:60px;overflow-y: auto;margin-left:2px;padding-right:2px">
+                                    <div style="width:100%">
+                                        @item.ProductDesc
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="qnty-footer">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label><strong style="font-size:13px">Quantity:</strong> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="number" name="productQty" required style="width:100%" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <input type="submit" class="btn btn-primary w-100" value="Add to Cart" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    }
+</div>
+@{
+    if (TempData["itemAddedIntoCart"] != null)
+    {
+        <script>
+            alert('@TempData["itemAddedIntoCart"]');
+        </script>
+    }
+}
+
+@{
+    if (TempData["itemOutOffStock"] != null)
+    {
+        <script>
+            alert('@TempData["itemOutOffStock"]');
+        </script>
+    }
+}
+
+
+
+@{
+    if (TempData["checkoutConfirm"] != null)
+    {
+        <script>
+            alert('@TempData["checkoutConfirm"]');
+        </script>
+    }
+}

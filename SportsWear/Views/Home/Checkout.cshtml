@@ -1,0 +1,115 @@
+﻿@model SportsWear.Models.Order
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+@using Microsoft.Extensions.Options
+@inject IOptions<SportsWear.Data.StripeSetting> Stripe
+<div class="row">
+    <div class="card p-3 mt-5 col-12">
+        <h4 class="mb-3 mt-3">You are buying these products</h4>
+        <table class="table table-hover  table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Qty
+                    </th>
+                    <th>
+                        Total Price
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    double SubTotalPrice = 0;
+                }
+                @foreach (var item in ViewBag.checkOutItems as ICollection<SportsWear.Models.CustomerCartItems>)
+                {
+                    SubTotalPrice = SubTotalPrice + item.productPrice * item.cartQty;
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productPrice)$
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.cartQty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productTotalPrice)$
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <p> <strong>SubTotals : </strong> <span class="text-muted" style="font-size:20px"> @SubTotalPrice$</span></p>
+
+        </div>
+    </div>
+
+</div>
+<br />
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4 card p-3 ">
+        <h5 class="text-center mt-2">Checkout</h5>
+        <hr style="background-color:white" />
+        <h6>Address Detail</h6>
+        <form asp-action="Checkout" method="post">
+            @{var multiplySubTotal = SubTotalPrice * 100;}
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="chargeTotalAmount" value="@multiplySubTotal" />
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressDetail" class="control-label"></label>
+                <textarea asp-for="AddressDetail" class="form-control"></textarea>
+                <span asp-validation-for="AddressDetail" class="text-danger"></span>
+            </div>
+            <div>
+
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-currency="CAD"
+                        data-key="@Stripe.Value.Publishablekey"
+                        data-amount="@multiplySubTotal"
+                        data-name="Pay with card"
+                        data-description="Purchasing sports wear products"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                        data-locale="en"
+                        data-zip-code="true">
+                </script>
+                <button type="submit" class="btn btn-success btn-block">Checkout</button>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+</script>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SportsWear.Models.Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3 class="mt-3 mb-3">Brand New Products</h3>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card">
+                <form asp-action="AddToCart">
+                    <input name="productId" value="@item.ProductId" type="hidden" />
+                    <input name="productName" type="hidden" value="@item.ProductName" />
+                    <input name="productPrice" type="hidden" value="@item.ProductPrice" />
+                    <div class="card-body">
+                        <div id="image-container" style="height:200px">
+                            <img src="~/images/uploads/productImages/@item.ProductImage" style="height:100%;width:100%;border:1px solid grey" />
+                        </div>
+                        <div id="main-content">
+                            <div id="title">
+                                @item.ProductName
+                            </div>
+                            <div id="price">
+                                <strong>Price:</strong> @item.ProductPrice€
+                            </div>
+                            <div id="qnty">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <label><strong style="font-size:13px">Quantity:</strong> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="number" name="productQnty" required style="width:100%" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <input type="submit" class="btn btn-primary w-100" value="Add to Cart" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    }
+</div>

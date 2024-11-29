@@ -1,0 +1,120 @@
+﻿@model IEnumerable<SportsWear.Models.Order>
+
+@{
+    ViewData["Title"] = "MyOrders";
+}
+@if (Model.Count() != 0)
+{
+    <div class="card p-3 mt-5" style="overflow-x:auto;width:100%">
+        <h4 class="mb-3 ">MyOrders</h4>
+
+        <table class="table table-bordered bg-white">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AddressDetail)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderStatus)
+                    </th>
+                    <th>
+                        Details
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)$
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AddressDetail)
+                        </td>
+                        <td>
+                            @*
+                                0:received
+                                1:processing
+                                2:shipped
+                                3:cancelled
+                                4:completed
+                            *@
+                            @if (item.OrderStatus == 0)
+                            {
+                                <span class="text-success" style="font-size:12px;font-weight:bold">Received</span>
+                                <a class="btn btn-sm btn-primary" asp-action="CancelOrder" asp-route-id="@item.OrderId">Cancel</a>
+                            }
+                            @if (item.OrderStatus == 1)
+                            {
+                                <button class="btn btn-sm btn-success">Processing</button>
+                            }
+                            @if (item.OrderStatus == 2)
+                            {
+                                <button class="btn btn-sm btn-success">Shipped</button>
+                            }
+                            @if (item.OrderStatus == 3)
+                            {
+                                <button class="btn btn-sm btn-danger">Cancelled</button>
+                            }
+                            @if (item.OrderStatus == 4)
+                            {
+                                <button class="btn btn-sm btn-success">Completed</button>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-info" asp-action="OrderDetails" asp-route-id="@item.OrderId">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+    @if (TempData["orderCancelled"] != null)
+    {
+        <script>
+        alert('@TempData["orderCancelled"]');
+        </script>
+    }
+
+
+}
+else
+{
+    <div class="d-flex align-items-center justify-content-center card bg-light flex-row" style="height:75vh">
+        <h5>You have not place any order yet please continue to</h5>
+        <div> <a asp-action="Index" class="btn btn-sm btn-success ml-1"> Shopping</a></div>
+    </div>
+
+
+}

@@ -1,0 +1,58 @@
+﻿@model SportsWear.Models.Customer
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+
+<div class="row mt-5 mb-5 m-4">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 card  p-4 ">
+        <h5>Register your account</h5>
+        <hr style="background-color:white"/>
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Full Name</label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input asp-for="CustomerEmail" class="form-control" />
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                @if (ViewData["errorMessage"] != null)
+                {
+                    <div class="text-danger">@ViewData["errorMessage"]</div>
+                }
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phone</label>
+                <input asp-for="CustomerPhone" class="form-control" />
+                <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <input type="password" asp-for="CustomerPassword" class="form-control" />
+                <span asp-validation-for="CustomerPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Address</label>
+                <input asp-for="CustomerAddress" class="form-control" />
+                <span asp-validation-for="CustomerAddress" class="text-danger"></span>
+                
+            </div>
+
+           
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-success btn-block" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

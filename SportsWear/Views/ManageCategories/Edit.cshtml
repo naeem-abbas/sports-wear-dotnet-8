@@ -1,0 +1,45 @@
+﻿@model SportsWear.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<br />
+<div>
+    <!-- /.card -->
+    <!-- Horizontal Form -->
+    <div class="card card-success w-50">
+        <div class="card-header">
+            <h3 class="card-title">Edit Category</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form class="form-horizontal" asp-action="Edit">
+            <input type="hidden" asp-for="CategoryId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Category Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" asp-for="CategoryName" class="form-control" placeholder="Enter Category Name">
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer bg-white">
+                <button type="submit" class="btn btn-success">Update</button>
+
+                <button asp-action="Index" class="btn btn-info float-right">Back to List</button>
+            </div>
+            <!-- /.card-footer -->
+        </form>
+    </div>
+    <!-- /.card -->
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
